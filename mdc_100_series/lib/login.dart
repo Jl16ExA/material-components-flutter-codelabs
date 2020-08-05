@@ -20,7 +20,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // TODO: Add text editing controllers (101)
+  final _formKey = GlobalKey<FormState>();
+
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +40,41 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             SizedBox(height: 120.0),
+            Form(
+              key: _formKey,
+              child: Column(children: <Widget>[
+                TextFormField(
+                    validator: (val) => val.isEmpty ? 'Enter Email' : null,
+                    controller: _usernameController,
+                    decoration:
+                        InputDecoration(filled: true, labelText: 'Username')),
+                SizedBox(height: 20),
+                TextFormField(
+                  validator: (val) => val.isEmpty ? 'Enter Password' : null,
+                  controller: _passwordController,
+                  decoration:
+                      InputDecoration(filled: true, labelText: 'Password'),
+                  obscureText: true,
+                ),
+                SizedBox(height: 20),
+                ButtonBar(children: <Widget>[
+                  FlatButton(
+                      onPressed: () {
+                        _usernameController.clear();
+                        _passwordController.clear();
+                      },
+                      child: Text('CANCEL')),
+                  RaisedButton(
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          Navigator.pop(context);
+                        }
+                        //Validation Logic
+                      },
+                      child: Text('NEXT'))
+                ])
+              ]),
+            )
             // TODO: Wrap Username with AccentColorOverride (103)
             // TODO: Remove filled: true values (103)
             // TODO: Wrap Password with AccentColorOverride (103)
@@ -45,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 }
